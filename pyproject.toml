@@ -1,0 +1,48 @@
+[project]
+name = "aioavasho"
+version =  "0.0.1"
+description  = "Python async client of Avasho API, TextToSpeach service of isahab.ir"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["httpx>=0.23.0"]
+authors = [{ name = "Salar Nosrati-Ershad", email = "snosratiershad@gmail.com" }]
+urls = { "Homepage" = "https://github.com/snosratiershad/aioavasho" }
+keywords = ["avasho", "tts"]
+classifiers = [
+    "Programming Language :: Python",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
