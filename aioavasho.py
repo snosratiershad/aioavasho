@@ -4,7 +4,7 @@ from typing import TypedDict
 import httpx
 
 DEFAULT_BASE_URL: str = "https://partai.gw.isahab.ir"
-DEFAULT_TIMEOUT: int = 5
+DEFAULT_TIMEOUT: int = 60
 
 SHORT_SPEACH_ROUTE: str = "/TextToSpeech/v1/speech-synthesys"
 
@@ -55,15 +55,17 @@ class AvashoClient:
         base64_str: str = "1" if base64 else "0"
         checksum_str: str = "1" if checksum else "0"
         timestamp_str: str = "1" if timestamp else "0"
-        speaker_str: str = str(speaker)
+        speaker_str: str = str(speaker.value)
         speed_str: str = str(speed)
-        async with httpx.AsyncClient(base_url=self.base_url) as client:
+        async with httpx.AsyncClient(
+            base_url=self.base_url, timeout=self.timeout
+        ) as client:
             r: httpx.Response = await client.post(
                 SHORT_SPEACH_ROUTE,
                 headers={"gateway-token": self.token},
                 json={
                     "data": text,
-                    "filepath": filepath,
+                    "filePath": filepath,
                     "base64": base64_str,
                     "checksum": checksum_str,
                     "timestamp": timestamp_str,
