@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import IntEnum
 from typing import TypedDict
 
 import httpx
@@ -9,7 +9,7 @@ DEFAULT_TIMEOUT: int = 60
 SHORT_SPEACH_ROUTE: str = "/TextToSpeech/v1/speech-synthesys"
 
 
-class Speaker(int, Enum):
+class Speaker(IntEnum):
     AFRA = 1
     GARSHA = 2
     SARA = 3
@@ -55,7 +55,7 @@ class AvashoClient:
         base64_str: str = "1" if base64 else "0"
         checksum_str: str = "1" if checksum else "0"
         timestamp_str: str = "1" if timestamp else "0"
-        speaker_str: str = str(speaker.value)
+        speaker_str: str = str(speaker)
         speed_str: str = str(speed)
         async with httpx.AsyncClient(
             base_url=self.base_url, timeout=self.timeout
