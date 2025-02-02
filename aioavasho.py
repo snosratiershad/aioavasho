@@ -104,10 +104,13 @@ class AvashoClient:
             speaker=speaker,
             speed=speed,
         )
+        filepath_response: str | None = data["data"]["data"].get("filePath")
+        if filepath:
+            filepath_response = f"https://{filepath_response}"
         return {
             "base64": data["data"]["data"].get("base64"),
             "checksum": data["data"]["data"].get("checksum"),
-            "filepath": data["data"]["data"].get("filePath"),
+            "filepath": filepath_response,
             "timestamps": data["data"]["data"].get("timestamps"),
         }
 
