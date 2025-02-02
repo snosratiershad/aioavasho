@@ -1,11 +1,13 @@
 [project]
 name = "aioavasho"
-version =  "0.0.3"
-description  = "Python async client of Avasho API, TextToSpeach service of isahab.ir"
+version = "0.0.4"
+description = "Python async client of Avasho API, TextToSpeach service of isahab.ir"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = ["httpx>=0.23.0"]
-authors = [{ name = "Salar Nosrati-Ershad", email = "snosratiershad@gmail.com" }]
+authors = [
+    { name = "Salar Nosrati-Ershad", email = "snosratiershad@gmail.com" },
+]
 urls = { "Homepage" = "https://github.com/snosratiershad/aioavasho" }
 keywords = ["avasho", "tts"]
 classifiers = [

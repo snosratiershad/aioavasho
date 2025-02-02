@@ -7,6 +7,7 @@ DEFAULT_BASE_URL: str = "https://partai.gw.isahab.ir"
 DEFAULT_TIMEOUT: int = 60
 
 SHORT_SPEACH_ROUTE: str = "/TextToSpeech/v1/speech-synthesys"
+LONG_SPEACH_ROUTE: str = "/TextToSpeech/v1/longText"
 
 
 class Speaker(IntEnum):
@@ -29,6 +30,11 @@ class ShortSpeachResponse(TypedDict):
     checksum: str | None
     filepath: str | None
     timestamps: list[TimeStamp] | None
+
+
+class LongSpeachResponse(TypedDict):
+    estimated_process_time: int
+    token: str
 
 
 class AvashoClient:
@@ -103,4 +109,37 @@ class AvashoClient:
             "checksum": data["data"]["data"].get("checksum"),
             "filepath": data["data"]["data"].get("filePath"),
             "timestamps": data["data"]["data"].get("timestamps"),
+        }
+
+    async def _long_speach_request(
+        self, text: str, speaker: Speaker = Speaker.AFRA, speed: int = 1
+    ) -> dict:
+        async with httpx.AsyncClient(
+            base_url=self.base_url, timeout=self.timeout
+        ) as client:
+            r: httpx.Response = await client.post(
+                LONG_SPEACH_ROUTE,
+                headers={"gateway-token": self.token},
+                json={
+                    "data": text,
+                    "speaker": speaker,
+                    "speed": speed,
+                },
+            )
+            r.raise_for_status()
+            return r.json()
+
+    async def long_speach(
+        self,
+        text: str,
+        speaker: Speaker = Speaker.AFRA,
+        speed: int = 1,
+    ) -> LongSpeachResponse:
+        data: dict = await self._long_speach_request(text, speaker=speaker, speed=speed)
+        estimated_process_time: int = int(
+            data["data"]["data"]["estimatedProcessTime"].split()[0]
+        )
+        return {
+            "estimated_process_time": estimated_process_time,
+            "token": data["data"]["data"]["token"],
         }
