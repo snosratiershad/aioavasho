@@ -1,6 +1,6 @@
 [project]
 name = "aioavasho"
-version = "0.0.4"
+version = "0.0.5"
 description = "Python async client of Avasho API, TextToSpeach service of isahab.ir"
 readme = "README.md"
 requires-python = ">=3.9"
