@@ -1,5 +1,5 @@
 # aioavasho
-Python async client of Avasho API, TextToSpeech service of isahab.ir
+Python async client of Avasho API, TextToSpeech service of ivira.ai
 
 Note: This is not an official client of Avasho or Sahab
 
