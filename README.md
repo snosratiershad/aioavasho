@@ -1,5 +1,5 @@
 # aioavasho
-Python async client of Avasho API, TextToSpeach service of isahab.ir
+Python async client of Avasho API, TextToSpeech service of isahab.ir
 
 Note: This is not an official client of Avasho or Sahab
 
@@ -10,7 +10,7 @@ $ pip install aioavasho
 ```
 
 # Usage Examples
-## Short Speach
+## Short Speech
 ```python
 import asyncio
 import aioavasho
@@ -18,8 +18,8 @@ import aioavasho
 
 async def say_salam(
     avasho_client: aioavasho.AvashoClient, name: str
-) -> aioavasho.ShortSpeachResponse:
-    return await avasho_client.short_speach(
+) -> aioavasho.ShortSpeechResponse:
+    return await avasho_client.short_speech(
         f"سلام {name}", speaker=aioavasho.Speaker.BAHAR
     )
 
@@ -27,7 +27,7 @@ async def say_salam(
 def main():
     loop: asyncio.AbstractEventLoop = asyncio.new_event_loop()
     avasho: aioavasho.AvashoClient = aioavasho.AvashoClient("TOKEN")
-    salam: aioavasho.ShortSpeachResponse = loop.run_until_complete(
+    salam: aioavasho.ShortSpeechResponse = loop.run_until_complete(
         say_salam(avasho, "سالار")
     )
     print(f"file path: {salam.get("filepath")}")

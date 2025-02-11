@@ -6,8 +6,8 @@ import httpx
 DEFAULT_BASE_URL: str = "https://partai.gw.isahab.ir"
 DEFAULT_TIMEOUT: int = 60
 
-SHORT_SPEACH_ROUTE: str = "/TextToSpeech/v1/speech-synthesys"
-LONG_SPEACH_ROUTE: str = "/TextToSpeech/v1/longText"
+SHORT_SPEECH_ROUTE: str = "/TextToSpeech/v1/speech-synthesys"
+LONG_SPEECH_ROUTE: str = "/TextToSpeech/v1/longText"
 
 
 class Speaker(IntEnum):
@@ -25,14 +25,14 @@ class TimeStamp(TypedDict):
     end_time: int
 
 
-class ShortSpeachResponse(TypedDict):
+class ShortSpeechResponse(TypedDict):
     base64: str | None
     checksum: str | None
     filepath: str | None
     timestamps: list[TimeStamp] | None
 
 
-class LongSpeachResponse(TypedDict):
+class LongSpeechResponse(TypedDict):
     estimated_process_time: int
     token: str
 
@@ -48,7 +48,7 @@ class AvashoClient:
         self.base_url = base_url
         self.timeout = timeout
 
-    async def _request_short_speach(
+    async def _request_short_speech(
         self,
         text: str,
         filepath: bool = True,
@@ -67,7 +67,7 @@ class AvashoClient:
             base_url=self.base_url, timeout=self.timeout
         ) as client:
             r: httpx.Response = await client.post(
-                SHORT_SPEACH_ROUTE,
+                SHORT_SPEECH_ROUTE,
                 headers={"gateway-token": self.token},
                 json={
                     "data": text,
@@ -82,7 +82,7 @@ class AvashoClient:
             r.raise_for_status()
             return r.json()
 
-    async def short_speach(
+    async def short_speech(
         self,
         text: str,
         filepath: bool = True,
@@ -91,12 +91,12 @@ class AvashoClient:
         timestamp: bool = True,
         speaker: Speaker = Speaker.AFRA,
         speed: int = 1,
-    ) -> ShortSpeachResponse:
+    ) -> ShortSpeechResponse:
         assert (
             len(text) <= 1000
-        ), "short speach is not allowed for text with more then 1000 characters"
+        ), "short speech is not allowed for text with more then 1000 characters"
         assert speed > 0, "spead should be a non-zero positive number"
-        data: dict = await self._request_short_speach(
+        data: dict = await self._request_short_speech(
             text,
             filepath=filepath,
             checksum=checksum,
@@ -114,14 +114,14 @@ class AvashoClient:
             "timestamps": data["data"]["data"].get("timestamps"),
         }
 
-    async def _long_speach_request(
+    async def _long_speech_request(
         self, text: str, speaker: Speaker = Speaker.AFRA, speed: int = 1
     ) -> dict:
         async with httpx.AsyncClient(
             base_url=self.base_url, timeout=self.timeout
         ) as client:
             r: httpx.Response = await client.post(
-                LONG_SPEACH_ROUTE,
+                LONG_SPEECH_ROUTE,
                 headers={"gateway-token": self.token},
                 json={
                     "data": text,
@@ -132,13 +132,13 @@ class AvashoClient:
             r.raise_for_status()
             return r.json()
 
-    async def long_speach(
+    async def long_speech(
         self,
         text: str,
         speaker: Speaker = Speaker.AFRA,
         speed: int = 1,
-    ) -> LongSpeachResponse:
-        data: dict = await self._long_speach_request(text, speaker=speaker, speed=speed)
+    ) -> LongSpeechResponse:
+        data: dict = await self._long_speech_request(text, speaker=speaker, speed=speed)
         estimated_process_time: int = int(
             data["data"]["data"]["estimatedProcessTime"].split()[0]
         )
